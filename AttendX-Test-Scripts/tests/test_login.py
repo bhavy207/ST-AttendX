@@ -66,6 +66,16 @@ class TestLoginFunctionality(unittest.TestCase):
             self.service.login("student_01", "Password123!", role="faculty")
         self.assertIn("not registered under role 'faculty'", str(context.exception))
 
+    def test_07_valid_admin_login(self):
+        """TC_AUTH_07: Verify successful login with valid administrator credentials."""
+        session = self.service.login("admin_01", "AdminSecure999!", role="admin")
+        self.assertTrue(session["is_authenticated"])
+        self.assertEqual(session["username"], "admin_01")
+        self.assertEqual(session["role"], "admin")
+        self.assertEqual(session["name"], "System Admin")
+        self.assertTrue(session["session_token"].startswith("sess_admin_01_"))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
